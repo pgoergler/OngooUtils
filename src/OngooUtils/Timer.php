@@ -5,76 +5,59 @@ namespace OngooUtils;
 class Timer
 {
 
-    protected $resetAt;
-    protected $startAt;
-    protected $elapsed = 0;
-    protected $counter = 0;
+    protected $startAt = null;
     protected $state = 'stopped';
-
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    public function reset()
-    {
-        $this->resetAt = $this->now();
-        $this->startAt = 0;
-        $this->elapsed = 0;
-        $this->counter = 0;
-        $this->state = 'stopped';
-    }
+    protected $counter = 0;
+    protected $elapsed = 0;
 
     public function start()
     {
-        if (!$this->isStopped())
+        if ($this->isStopped())
         {
-            $this->stop();
+            $this->state = 'running';
+            $this->startAt = $this->now();
         }
-        $this->startAt = $this->now();
-        $this->state = 'running';
-        return $this;
     }
 
     public function stop()
     {
-        if ($this->isStopped())
+        if (!$this->isStopped())
         {
-            return $this;
+            $this->state = 'stopped';
+            $this->counter++;
+            $this->elapsed += $this->activeTime();
         }
-        $now = $this->now();
-        $this->elapsed += $now - $this->startAt;
-        $this->counter++;
-        $this->state = 'stopped';
-        return $this;
+        return $this->elapsed;
+    }
+
+    public function elapsed()
+    {
+        return $this->elapsed;
+    }
+
+    public function activeTime()
+    {
+        return $this->now() - $this->startAt;
+    }
+
+    public function count()
+    {
+        return $this->counter;
+    }
+
+    public function average()
+    {
+        if ($this->counter == 0)
+        {
+            return 0;
+        }
+
+        return $this->elapsed() / $this->count();
     }
 
     public function isStopped()
     {
         return $this->state == 'stopped';
-    }
-
-    public function elapsed()
-    {
-        if (!$this->isStopped())
-        {
-            $this->stop();
-        }
-        return $this->elapsed;
-    }
-
-    public function counter()
-    {
-        if (!$this->isStopped())
-        {
-            $this->stop();
-        }
-        return $this->counter;
-    }
-
-    public function get()
-    {
-        return $this->now() - $this->resetAt;
     }
 
     private function now()
@@ -83,5 +66,3 @@ class Timer
     }
 
 }
-
-
