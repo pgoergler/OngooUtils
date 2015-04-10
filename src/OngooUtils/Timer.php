@@ -9,6 +9,7 @@ class Timer
     protected $state = 'stopped';
     protected $counter = 0;
     protected $elapsed = 0;
+    protected $activeTime = null;
 
     public function start()
     {
@@ -16,6 +17,7 @@ class Timer
         {
             $this->state = 'running';
             $this->startAt = $this->now();
+            $this->activeTime = null;
         }
     }
 
@@ -37,7 +39,11 @@ class Timer
 
     public function activeTime()
     {
-        return $this->now() - $this->startAt;
+        if( is_null($this->activeTime) )
+        {
+            $this->activeTime =  $this->now() - $this->startAt;
+        }
+        return $this->activeTime;
     }
 
     public function count()
