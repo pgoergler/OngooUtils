@@ -11,7 +11,10 @@ class TimerManager
 
     protected function __construct()
     {
-        
+        if(class_exists('\Logging\LoggersManager'))
+        {
+            $this->logger = \Logging\LoggersManager::getInstance()->get();
+        }
     }
 
     /**
