@@ -39,9 +39,9 @@ class Timer
 
     public function activeTime()
     {
-        if( is_null($this->activeTime) )
+        if (is_null($this->activeTime))
         {
-            $this->activeTime =  $this->now() - $this->startAt;
+            $this->activeTime = $this->now() - $this->startAt;
         }
         return $this->activeTime;
     }
@@ -68,7 +68,7 @@ class Timer
 
     private function now()
     {
-        return microtime(true);
+        return microtime(true) * 1000;
     }
 
 }
