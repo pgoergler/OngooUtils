@@ -1,6 +1,6 @@
 <?php
 
-namespace Hidden
+namespace OngooHiddenNamespace
 {
 
     class FoundException extends \Exception
@@ -32,7 +32,7 @@ namespace Hidden
 
 namespace
 {
-    
+
     /**
      * 
      * Return $array group by $groupby key
@@ -164,7 +164,13 @@ namespace
         return false;
     }
 
-    function array_return($array, $function)
+    /**
+     * 
+     * @param Traversable $array
+     * @param type $function($value, $key)
+     * @return boolean
+     */
+    function array_return($array, callable $function)
     {
         if ($array instanceof Traversable)
         {
@@ -181,6 +187,13 @@ namespace
         return false;
     }
 
+    /**
+     * 
+     * @param \Iterator $array
+     * @param \Closure $callback($value)
+     * @param type $defaultValue
+     * @return type
+     */
     function iterator_search_callback(\Iterator $array, \Closure $callback, $defaultValue = false)
     {
         try
@@ -191,17 +204,24 @@ namespace
                 $res = $callback($value);
                 if ($res)
                 {
-                    throw new \Hidden\FoundException(null, $value);
+                    throw new \OngooHiddenNamespace\FoundException(null, $value);
                 }
                 return true;
             }, array($array));
             return $defaultValue;
-        } catch (\Hidden\FoundException $ex)
+        } catch (\OngooHiddenNamespace\FoundException $ex)
         {
             return $ex->getValue();
         }
     }
 
+    /**
+     * 
+     * @param array $array
+     * @param \Closure $callback($key, $value)
+     * @param type $defaultValue
+     * @return type
+     */
     function array_search_key_callback(array $array, \Closure $callback, $defaultValue = false)
     {
         try
@@ -210,16 +230,23 @@ namespace
             {
                 if ($callback($key, $value))
                 {
-                    throw new \Hidden\FoundException($key, $value);
+                    throw new \OngooHiddenNamespace\FoundException($key, $value);
                 }
             });
             return $defaultValue;
-        } catch (\Hidden\FoundException $ex)
+        } catch (\OngooHiddenNamespace\FoundException $ex)
         {
             return $ex->getKey();
         }
     }
 
+    /**
+     * 
+     * @param array $array
+     * @param \Closure $callback($key, $value)
+     * @param type $defaultValue
+     * @return type
+     */
     function array_search_callback(array $array, \Closure $callback, $defaultValue = false)
     {
         try
@@ -228,14 +255,46 @@ namespace
             {
                 if ($callback($key, $value))
                 {
-                    throw new \Hidden\FoundException($key, $value);
+                    throw new \OngooHiddenNamespace\FoundException($key, $value);
                 }
             });
             return $defaultValue;
-        } catch (\Hidden\FoundException $ex)
+        } catch (\OngooHiddenNamespace\FoundException $ex)
         {
             return $ex->getValue();
         }
+    }
+
+    /**
+     * 
+     * @param $array
+     * @param \Closure $callback($value)
+     * @param type $defaultValue
+     * @return type
+     */
+    function search_callback($array, \Closure $callback, $defaultValue = false)
+    {
+        if ($array instanceof \Iterator)
+        {
+            return \iterator_search_callback($array, $callback, $defaultValue);
+        } elseif (is_array($array))
+        {
+            try
+            {
+                array_walk($array, function($value, $key) use (&$callback)
+                {
+                    if ($callback($value, $key))
+                    {
+                        throw new \OngooHiddenNamespace\FoundException($key, $value);
+                    }
+                });
+                return $defaultValue;
+            } catch (\OngooHiddenNamespace\FoundException $ex)
+            {
+                return $ex->getValue();
+            }
+        }
+        return $defaultValue;
     }
 
 }
