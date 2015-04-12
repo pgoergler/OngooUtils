@@ -67,7 +67,7 @@ class Timer
             return 0;
         }
 
-        return $this->elapsed() / $this->count();
+        return $this->totalActiveTime() / $this->count();
     }
 
     public function isStopped()
