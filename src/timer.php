@@ -42,6 +42,18 @@ function timer_elapsed($timer_id = 'main')
  * @param string $timer_id
  * @return float nb seconds,milliseconds
  */
+function timer_total_active_time($timer_id = 'main')
+{
+    $timer = \OngooUtils\TimerManager::getInstance()->getTimer($timer_id);
+    return $timer->totalActiveTime();
+}
+
+/**
+ * Return last active time
+ * 
+ * @param string $timer_id
+ * @return float nb seconds,milliseconds
+ */
 function timer_active_time($timer_id = 'main')
 {
     $timer = \OngooUtils\TimerManager::getInstance()->getTimer($timer_id);

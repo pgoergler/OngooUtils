@@ -8,7 +8,7 @@ class Timer
     protected $startAt = null;
     protected $state = 'stopped';
     protected $counter = 0;
-    protected $elapsed = 0;
+    protected $totalActiveTime = 0;
     protected $activeTime = null;
 
     public function start()
@@ -27,21 +27,30 @@ class Timer
         {
             $this->state = 'stopped';
             $this->counter++;
-            $this->elapsed += $this->activeTime();
+            $this->activeTime = $this->elapsed();
+            $this->totalActiveTime += $this->activeTime;
         }
-        return $this->elapsed;
+        return $this->totalActiveTime;
     }
 
     public function elapsed()
     {
-        return $this->elapsed;
+        return $this->now() - $this->startAt;
     }
 
+    public function totalActiveTime()
+    {
+        if( !$this->isStopped() ) {
+            return $this->totalActiveTime + $this->elapsed();
+        }
+        return $this->totalActiveTime;
+    }
+    
     public function activeTime()
     {
         if (is_null($this->activeTime))
         {
-            $this->activeTime = $this->now() - $this->startAt;
+            return $this->elapsed();
         }
         return $this->activeTime;
     }
