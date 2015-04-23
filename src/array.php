@@ -182,7 +182,7 @@ namespace
             return $result;
         } elseif (is_array($array))
         {
-            return \array_map($array, $function);
+            return \array_map($function, $array);
         }
         return false;
     }
