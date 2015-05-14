@@ -16,7 +16,8 @@
             "src/datetime.php",
             "src/network.php",
             "src/number.php",
-            "src/timer.php"
+            "src/timer.php",
+            "src/closurize.php"
         ]
     }
 }
