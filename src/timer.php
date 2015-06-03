@@ -87,7 +87,7 @@ function timer_log($timer_id = 'main', $prefix = '')
     $manager = \OngooUtils\TimerManager::getInstance();
     $timer = $manager->getTimer($timer_id);
 
-    $elapsed = \round($timer->elapsed(), 2, PHP_ROUND_HALF_UP);
+    $elapsed = \round($timer->totalActiveTime(), 2, PHP_ROUND_HALF_UP);
     $counter = $timer->count();
     $avg = \round($timer->average(), 2, PHP_ROUND_HALF_UP);
 
