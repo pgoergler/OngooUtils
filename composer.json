@@ -9,14 +9,13 @@
     "require": {"php": ">=5.3.0"},
     "autoload": {
         "psr-0": {
-            "OngooUtils": "src"
+            "Ongoo\\Utils": "src"
         },
         "files": [
             "src/array.php",
             "src/datetime.php",
             "src/network.php",
             "src/number.php",
-            "src/timer.php",
             "src/closurize.php"
         ]
     }
